@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.AlbumChapterDAO">
+	<!-- 关系映射 -->
+	<resultMap type="Album" id="AAC">
+		<id column="aid" property="id"/>
+		<result column="atitle" property="title"/>
+		<result column="apath" property="coverPath"/>
+		<result column="acount" property="count"/>
+		<result column="ascore" property="score"/>
+		<result column="aauthor" property="author"/>
+		<result column="ateller" property="teller"/>
+		<result column="adate" property="publish_date"/>
+		<result column="abrief" property="brief"/>
+		
+		<collection property="children" ofType="Chapter">
+			<id column="cid" property="id"/>
+			<result column="cname" property="title"/>
+			<result column="csize" property="size"/>
+			<result column="csrc" property="src"/>
+			<result column="ccid" property="clbumId"/>
+		</collection>
+	</resultMap>
+	<!-- 查所有 -->
+	<select id="selectAllAlbumAndChapter" resultMap="AAC">
+		select a.album_id aid, a.title atitle, a.cover_path apath, a.count acount, a.score ascore, a.author aauthor, 
+				a.teller ateller, a.publish_date adate, a.brief abrief,
+				 c.chapter_id cid, c.chapter_name cname, c.size csize, c.src csrc, c.clbum_id ccid
+		from c_album a left join c_chapter c
+		on a.album_id=c.clbum_id
+		
+	</select>
+	<!-- 添加新专辑 -->
+	<insert id="insertNewAlbum">
+		insert into c_album values(#{id}, #{title}, #{coverPath}, #{count}, #{score}, #{author}, #{teller}, #{publish_date}, #{brief})
+	</insert>
+	<!-- 添加音频 -->
+	<insert id="insertNewChapter">
+		insert into c_chapter  values (#{id}, #{title}, #{size}, #{src}, #{clbumId})
+	</insert>
+	<!-- 专辑详情-->
+	<select id="selectOneAlbum" resultMap="AAC">
+		select a.album_id aid, a.title atitle, a.cover_path apath, a.count acount, a.score ascore, a.author aauthor, 
+				a.teller ateller, a.publish_date adate, a.brief abrief 
+				from c_album a 
+				where a.album_id=#{id}
+	</select>
+</mapper>

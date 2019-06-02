@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.AdminDAO">
+	<!-- 登录查询 -->
+	<select id="selectOneAdminByNameAndPass" resultType="Admin">
+		select admin_id, username,password, level, login_date from c_admin where username=#{username} and password=#{password}
+	</select>
+	<!-- 注册 -->
+	<insert id="insertNewAdmin">
+		insert into c_admin values (#{adminID},#{username},#{password},#{level},#{logindate})
+	</insert>
+	<!-- 修改状态 -->
+	<update id="updateAdminsPassword">
+		update c_admin set password = #{password} where username = #{username}
+	</update>
+</mapper>

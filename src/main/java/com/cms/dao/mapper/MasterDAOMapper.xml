@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.MasterDAO">
+	<!-- 影射 -->
+	<resultMap type="Master" id="MASTER">
+		<id column="mmasterId" property="masterId"/>
+		<result column="mname" property="name"/>
+		<result column="mdharmaName" property="dharmaName"/>
+		<result column="mhead" property="head"/>
+		<result column="mstatus" property="status"/>
+	<collection property="article" ofType="Article">
+		<id column="aarticleId" property="articleId"/>
+		<result column="atitle" property="title"/>
+		<result column="apublishDate" property="publishDate"/>
+		<result column="aauthor" property="author"/>
+		<result column="acontent" property="content"/>
+		<result column="amasterId" property="masterId"/>
+	</collection>
+	</resultMap>
+	<!-- 查所有上师方法 -->
+	<select id="selectAllMaster" resultMap="MASTER">
+		select m.master_id mmasterId, m.name mname, m.dharma_name mdharmaName, m.head mhead, m.status mstatus,
+			 a.article_id aarticleId, a.title atitle, a.publish_date apublishDate,a.author aauthor, a.content acontent, a.master_id amasterId
+		from c_master m inner join c_article a
+		on m.master_id = a.master_id
+	</select>
+</mapper>

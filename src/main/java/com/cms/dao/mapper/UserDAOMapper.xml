@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.UserDAO">
+	<!-- 影射 -->
+	<resultMap type="User" id="USER">
+		<id column="usid" property="userId"/>
+		<result column="uphone" property="phone"/>
+		<result column="upassword" property="password"/>
+		<result column="uname" property="name"/>
+		<result column="uhead" property="headPath"/>
+		<result column="udarma" property="dharma"/>
+		<result column="ugender" property="gender"/>
+		<result column="province" property="province"/>
+		<result column="ucity" property="city"/>
+		<result column="usign" property="sign"/>
+		<result column="ustatus" property="status"/>
+		<result column="uregister" property="registerDate"/>
+		<result column="usalt" property="salt"/>
+	</resultMap>
+	
+	<!-- 查所有用户 -->
+	<select id="selectAllUser" resultMap="USER" >
+		select u.user_id usid, u.phone uphone, u.password upassword, u.name uname, u.head_path uhead, u.dharma udarma, u.gender ugender, u.province province, u.city ucity, u.sign usign, u.status ustatus, u.register_date uregister, u.salt usalt
+		from c_user u
+	</select>
+	<!-- 通过数组查询部分用户 -->
+	<select id="selectSomeUser" resultMap="USER">
+		select u.user_id usid, u.phone uphone, u.password upassword, u.name uname, u.head_path uhead, u.dharma udarma, u.gender ugender, u.province province, u.city ucity, u.sign usign, u.status ustatus, u.register_date uregister, u.salt usalt
+		from c_user u  where u.user_id =#{id}
+	</select>
+	<!-- 获得女每月注册人数 -->
+	<select id="getNvCount" resultType="CMonth">
+		SELECT month, COUNT(*) AS count
+		FROM
+			(
+					SELECT
+						DATE_FORMAT(register_date, '%m') month
+					FROM
+						c_user
+					WHERE
+						DATE_FORMAT(register_date, '%Y') = 2018 and gender='女'
+			) a
+		GROUP BY
+			month
+	</select>
+	<!-- 获得男每月注册人数 -->
+	<select id="getNanCount" resultType="CMonth">
+		SELECT month, COUNT(*) AS count
+		FROM
+			(
+					SELECT
+						DATE_FORMAT(register_date, '%m') month
+					FROM
+						c_user
+					WHERE
+						DATE_FORMAT(register_date, '%Y') = 2018 and gender='男'
+			) a
+		GROUP BY
+			month
+	</select>
+	<!-- 按省份统计女 -->
+	<select id="queryCountV" resultType="ProvinceCount">
+		select u.province name,sum(case when u.gender='女' then 1 else 0 end ) value
+		from c_user u
+		group by province
+	</select>
+	<!-- 按省份统计男 -->
+	<select id="queryCountN" resultType="ProvinceCount">
+		select u.province name,sum(case when u.gender='男' then 1 else 0 end ) value
+		from c_user u
+		group by province
+	</select>
+</mapper>

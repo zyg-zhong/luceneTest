@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.ArticleDAO">
+	
+	<!-- 查所有文章 -->
+	<select id="selectAllArticle" resultType="Article">
+		select  a.article_id articleId, a.title title, a.publish_date publishDate,a.author author, a.content content, a.master_id masterId
+		from c_article a
+	</select>
+</mapper>

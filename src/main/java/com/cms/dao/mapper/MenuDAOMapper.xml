@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.MenuDAO">
+	<!-- 影射 -->
+	<resultMap type="Menu" id="MENU">
+		<id column="aid" property="menuId"/>
+		<result column="aname" property="menuName"/>
+		<result column="alevel" property="level"/>
+		<result column="apid" property="parentId"/>
+		<result column="ahref" property="href"/>
+		<result column="aic" property="iconCls"/>
+		
+	<collection property="chrildren" ofType="Menu">
+		<id column="bid" property="menuId"/>
+		<result column="bname" property="menuName"/>
+		<result column="blevel" property="level"/>
+		<result column="bpid" property="parentId"/>
+		<result column="bhref" property="href"/>
+		<result column="bic" property="iconCls"/>
+	</collection>
+	</resultMap>
+	
+	<!-- 方法 -->
+	<select id="selectAllMenus" resultMap="MENU">
+		select a.menu_id aid,a.menu_name aname, a.level alevel, a.parent_id apid, a.href ahref,a.iconCls aic,b.menu_id bid,b.menu_name bname, b.level blevel, b.parent_id bpid, b.href bhref,b.iconCls bic
+		from c_menu a inner join c_menu b
+		on a.menu_id=b.parent_id
+	</select>
+	
+	<!-- 查子菜单 -->
+	<select id="selectClildrenManu" resultMap="MENU">
+		select a.menu_id aid,a.menu_name aname, a.level alevel, a.parent_id apid, a.href ahref,a.iconCls aic,b.menu_id bid,b.menu_name bname, b.level blevel, b.parent_id bpid, b.href bhref,b.iconCls bic
+		from c_menu a inner join c_menu b
+		on a.menu_id=b.parent_id
+		where b.parent_id=#{id}
+	</select>
+</mapper>

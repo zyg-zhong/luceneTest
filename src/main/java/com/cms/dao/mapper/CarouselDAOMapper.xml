@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cms.zyg.dao.CarouselDAO">
+	<!-- 影射 -->
+	<resultMap type="Carousel" id="CAROUSEL">
+		<id column="cid" property="carouselId"/>
+		<result column="cname" property="carouselName"/>
+		<result column="cpath" property="imgPath"/>
+		<result column="cdescription" property="description"/>
+		<result column="cstatus" property="status"/>
+		<result column="cdate" property="uploadDate"/>
+	</resultMap>
+	
+	<!-- 查所有轮播图 -->
+	<select id="selectAllCarousel" resultMap="CAROUSEL">
+		select c.carousel_id cid,c.carousel_name cname, c.img_path cpath, c.description cdescription, c.status cstatus, c.upload_date cdate 
+		from c_carousel c
+	</select>
+	<!-- 查一个 -->
+	<select id="selectOneCarousel" resultMap="CAROUSEL">
+		select c.carousel_id cid,c.carousel_name cname, c.img_path cpath, c.description cdescription, c.status cstatus, c.upload_date cdate 
+		from c_carousel c
+		where carousel_id=#{id}
+	</select>
+	<!-- 添加 -->
+	<insert id="insertNewCarousel">
+		insert into c_carousel  values (#{carouselId},#{carouselName},#{imgPath},#{description},#{status},#{uploadDate});
+	</insert>
+	<!-- 删除一个 -->
+	<delete id="deleteOneCarousel">
+		delete from c_carousel where carousel_id=#{id}
+	</delete>
+	<!-- 修改 -->
+	<update id="updateOneCarousel">
+		update c_carousel set status=#{status} where carousel_id=#{carouselId}
+	</update>
+	
+</mapper>
